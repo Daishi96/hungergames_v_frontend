@@ -1,0 +1,44 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* sidebar base */
+.pro-sidebar {
+  background-color: #1a1a1a;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  overflow-y: auto;
+  width: 250px; /* larghezza sidebar quando espansa */
+  transition: width 0.3s ease;
+}
+
+/* sidebar collapsed */
+.pro-sidebar.collapsed {
+  width: 80px; /* larghezza sidebar quando collassata */
+}
+
+/* menu item */
+.pro-menu-item {
+  color: white;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pro-menu-item:hover {
+  background-color: #333;
+}
+
+/* header */
+.pro-sidebar-header {
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #444;
+}
