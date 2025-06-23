@@ -98,6 +98,16 @@ export default function MappaInterattiva({ userid, pathHistory }) {
       >
         <TileLayer url="/tiles/{z}/{x}/{y}.png" tileSize={TILE_SIZE} noWrap />
         <Polyline positions={path} color="red" />
+        {path.length > 0 && (
+          <>
+            <Marker position={path[0]}>
+              <Popup>Inizio</Popup>
+            </Marker>
+            <Marker position={path[path.length - 1]}>
+              <Popup>Fine</Popup>
+            </Marker>
+          </>
+        )}
         <ZoomControl position="topright" />
       </MapContainer>
     </div>

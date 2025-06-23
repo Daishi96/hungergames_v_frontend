@@ -31,8 +31,9 @@ function App() {
           const historyData = await historyRes.json();
           // historyData = [{ q, r, timestamp, username }, ...]
           // Mappo solo q e r per la mappa
-          const path = historyData.map(({ q, r }) => ({ q, r }));
+          const path = historyData.map(({ x, y }) => ({ q: Number(y), r: Number(x) }));
           setPathHistory(path);
+          //setPathHistory([{ q: 0, r: 0 },{ q: 1, r: 0 }]);
         } else {
           setPathHistory([{ q: 0, r: 0 }]); // fallback se non c'è storia
         }
