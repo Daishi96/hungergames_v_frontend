@@ -8,7 +8,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }, { q: 17, r: 19 }]);
+  //const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }, { q: 17, r: 19 }]);
 
 
   const handleLogin = async (e) => {
@@ -23,7 +23,20 @@ function App() {
       const data = await res.json();
       if (res.ok) {
         setMessage(`Login riuscito. Benvenuto, ${userid}`);
-        setIsLoggedIn(true); // cambio stato a loggato
+        setIsLoggedIn(true);
+
+        // Ora prendo la history dal backend
+        const historyRes = await fetch(`https://hungergame-v.onrender.com/users/${userid}/history`);
+        if (historyRes.ok) {
+          const historyData = await historyRes.json();
+          // historyData = [{ q, r, timestamp, username }, ...]
+          // Mappo solo q e r per la mappa
+          const path = historyData.map(({ q, r }) => ({ q, r }));
+          setPathHistory(path);
+        } else {
+          setPathHistory([{ q: 0, r: 0 }]); // fallback se non c'è storia
+        }
+
       } else {
         setMessage(data.error || 'Errore di login');
       }
