@@ -8,7 +8,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }, { q: 17, r: 19 }]);
+  const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }]);
 
 
   const handleLogin = async (e) => {
