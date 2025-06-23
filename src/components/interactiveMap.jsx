@@ -23,6 +23,7 @@ function axialToPixel(q, r) {
 export default function MappaInterattiva({ userid, pathHistory }) {
   const [collapsed, setCollapsed] = useState(true);
   const [stats, setStats] = useState(null);
+  const [tileSet, setTileSet] = useState(1); 
 
   useEffect(() => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
@@ -33,8 +34,18 @@ export default function MappaInterattiva({ userid, pathHistory }) {
 
   const path = pathHistory.map(({ q, r }) => axialToPixel(q, r));
 
+  // Funzione per cambiare tiles
+  const toggleTiles = () => {
+    setTileSet(tileSet === 1 ? 2 : 1);
+  };
+
+  // URL TileLayer in base allo stato tileSet
+  const tileUrl = tileSet === 1
+    ? '/tiles/base/{z}/{x}/{y}.png'
+    : '/tiles/coordinates/{z}/{x}/{y}.png';
+
   return (
-    <div style={{ height: '100vh', position: 'relative' }}>
+    <div className="login-background" style={{ height: '100vh', position: 'relative' }}>
       {/* Bottone hamburger */}
       <button
         onClick={() => setCollapsed(!collapsed)}
@@ -53,6 +64,32 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         aria-label="Apri/chiudi menu"
       >
         <FaBars size={20} />
+      </button>
+
+      {/* Bottone per cambiare tiles */}
+      <button
+        onClick={toggleTiles}
+        style={{
+          position: 'fixed',
+          top: 15,  // sotto l'hamburger
+          left: 60,
+          zIndex: 1101,
+          background: 'white',
+          border: 'none',
+          padding: '0.5rem',
+          borderRadius: '50px',
+          cursor: 'pointer',
+          color: 'white',
+          boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+        }}
+      >
+      <img
+      src="/layer.png"
+      alt="Cambia Tiles"
+      width="24"
+      height="24"
+      style={{ display: 'block' }}
+    />
       </button>
 
       {/* Sidebar custom senza libreria */}
@@ -96,7 +133,8 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
-        <TileLayer url="/tiles/{z}/{x}/{y}.png" tileSize={TILE_SIZE} noWrap />
+
+        <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap />
         <Polyline positions={path} color="red" />
         {path.length > 0 && (
           <>

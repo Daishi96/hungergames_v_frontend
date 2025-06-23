@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MappaInterattiva from './components/interactiveMap';
 import 'leaflet/dist/leaflet.css';
-//import './index.css'
+import './App.css'; // importa il file CSS
 
 function App() {
   const [userid, setUserid] = useState('');
@@ -9,7 +9,6 @@ function App() {
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }]);
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,19 +24,14 @@ function App() {
         setMessage(`Login riuscito. Benvenuto, ${userid}`);
         setIsLoggedIn(true);
 
-        // Ora prendo la history dal backend
         const historyRes = await fetch(`https://hungergame-v.onrender.com/users/${userid}/history`);
         if (historyRes.ok) {
           const historyData = await historyRes.json();
-          // historyData = [{ q, r, timestamp, username }, ...]
-          // Mappo solo q e r per la mappa
           const path = historyData.map(({ x, y }) => ({ q: Number(y), r: Number(x) }));
           setPathHistory(path);
-          //setPathHistory([{ q: 0, r: 0 },{ q: 1, r: 0 }]);
         } else {
-          setPathHistory([{ q: 0, r: 0 }]); // fallback se non c'è storia
+          setPathHistory([{ q: 0, r: 0 }]);
         }
-
       } else {
         setMessage(data.error || 'Errore di login');
       }
@@ -49,14 +43,16 @@ function App() {
   return isLoggedIn ? (
     <MappaInterattiva userid={userid} pathHistory={pathHistory} />
   ) : (
-    <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
-      <h2>Login Hunger Games</h2>
-      <form onSubmit={handleLogin}>
-        <input type="text" placeholder="User ID" value={userid} onChange={e => setUserid(e.target.value)} /><br/>
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} /><br/>
-        <button type="submit">Login</button>
-      </form>
-      <p>{message}</p>
+    <div className="login-background">
+      <div className="login-box">
+        <h2>Hunger James</h2>
+        <form onSubmit={handleLogin}>
+          <input type="text" placeholder="User ID" value={userid} onChange={e => setUserid(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+          <button type="submit">Entra nell'arena</button>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 }

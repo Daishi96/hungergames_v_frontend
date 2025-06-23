@@ -8,8 +8,27 @@ html, body, #root {
   color: white;
   padding: 0.75rem 1rem;
   user-select: none;
+  border: 1px solid #444;
+  margin: 0.25rem 1rem;
+  border-radius: 6px;
+  background-color: #222;
+  transition: background-color 0.3s ease;
+  font-family: Arial, sans-serif;
 }
 
-.pro-menu-item:hover {
-  background-color: #333;
+
+.leaflet-container {
+  background: transparent !important; /* elimina sfondo grigio di default */
 }
+
+.login-background {
+  background-image: url('https://i.gifer.com/1zfb.gif');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
