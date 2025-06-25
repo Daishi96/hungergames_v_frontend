@@ -4,42 +4,70 @@ import L from 'leaflet';
 import { FaBars } from 'react-icons/fa';
 import 'leaflet/dist/leaflet.css';
 import '../index.css';
+import { Grid, Typography } from '@mui/material';
 
 const TILE_SIZE = 128;
 const MAX_ZOOM = 4;
 
-function axialToPixel(q, r) {
+/*function axialToPixel(q, r) {
   const centerX = 64;
   const centerY = -64;
-  const correction = r !== 0 ? 0.0625 * (Math.abs(r) - 1) : 0;
-  const diagonalX = r * 2.4375 - correction;
-  const diagonalY = r * 1.375 - correction;
+  //const correction = r !== 0 ? 0.0625 * (Math.abs(r) - 1) : 0;
+  const diagonalX = r * 2.4375 ;//- correction;
+  const diagonalY = r * 1.375 ;//- correction;
   const verticalY = q * 2.625;
   const x = centerX + diagonalX;
   const y = centerY + verticalY - diagonalY;
   return [y, x];
+}*/
+
+function axialToPixel(q, r) {
+  const centerX = 64;
+  const centerY = -64;
+
+  const diagonalX = r * 2.375; // spostamento orizzontale "a scatti"
+  const correctionY = r * 0.0625;
+  const diagonalY = r * 1.375 - correctionY;
+
+  const verticalY = q * 2.625;
+
+  const x = centerX + diagonalX;
+  const y = centerY + verticalY - diagonalY;
+
+  return [y, x];
 }
+
+
 
 export default function MappaInterattiva({ userid, pathHistory }) {
   const [collapsed, setCollapsed] = useState(true);
   const [stats, setStats] = useState(null);
-  const [tileSet, setTileSet] = useState(1); 
+  const [tileSet, setTileSet] = useState(1);
 
-  useEffect(() => {
+  const refreshData = () => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
       .then(res => res.json())
       .then(setStats)
       .catch(console.error);
+    // eventualmente qui puoi aggiornare anche pathHistory, se dinamico
+  };
+
+  useEffect(() => {
+    refreshData();
   }, [userid]);
 
   const path = pathHistory.map(({ q, r }) => axialToPixel(q, r));
+  useEffect(() => {
+  console.log("Coordinate path:");
+  path.forEach((pos, index) => {
+    console.log(`Punto ${index}: [lat: ${pos[0]}, lng: ${pos[1]}]`);
+  });
+}, [path]);
 
-  // Funzione per cambiare tiles
   const toggleTiles = () => {
     setTileSet(tileSet === 1 ? 2 : 1);
   };
 
-  // URL TileLayer in base allo stato tileSet
   const tileUrl = tileSet === 1
     ? '/tiles/base/{z}/{x}/{y}.png'
     : '/tiles/coordinates/{z}/{x}/{y}.png';
@@ -71,7 +99,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         onClick={toggleTiles}
         style={{
           position: 'fixed',
-          top: 15,  // sotto l'hamburger
+          top: 15,
           left: 60,
           zIndex: 1101,
           background: 'white',
@@ -83,16 +111,42 @@ export default function MappaInterattiva({ userid, pathHistory }) {
           boxShadow: '0 0 5px rgba(0,0,0,0.2)',
         }}
       >
-      <img
-      src="/layer.png"
-      alt="Cambia Tiles"
-      width="24"
-      height="24"
-      style={{ display: 'block' }}
-    />
+        <img
+          src="/layer.png"
+          alt="Cambia Tiles"
+          width="24"
+          height="24"
+          style={{ display: 'block' }}
+        />
       </button>
 
-      {/* Sidebar custom senza libreria */}
+      {/* Bottone per Refresh */}
+      <button
+        onClick={refreshData}
+        style={{
+          position: 'fixed',
+          top: 15,
+          left: 110,
+          zIndex: 1101,
+          background: 'white',
+          border: 'none',
+          padding: '0.5rem',
+          borderRadius: '50px',
+          cursor: 'pointer',
+          color: 'white',
+          boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+        }}
+      >
+        <img
+          src="/refresh.png"
+          alt="Cambia Tiles"
+          width="24"
+          height="24"
+          style={{ display: 'block' }}
+        />
+      </button>
+
+      {/* Sidebar custom */}
       <div
         style={{
           position: 'fixed',
@@ -114,27 +168,54 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         </div>
         {stats ? (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 bg-zinc-900 text-white p-4 rounded-md border border-zinc-700">
-              <div className="col-span-2">🧍 Nome: {stats.nome}</div>
-              <div className="col-span-2 flex gap-x-2">
-                <div>🗡️ Arma: {stats.arma}</div>
-                <div>💼 Slot Arma: {stats.slotarma}</div>
-              </div>
-              <div className="col-span-2 flex gap-x-2">
-                <div>🧤 Armatura Braccia: {stats.armaturabraccia}</div>
-                <div>💪 Slot Braccia: {stats.slotbraccia}</div>
-              </div>
-              <div>🛡️ Armatura Testa: {stats.armaturatesta}</div>
-              <div>🦺 Armatura Torso: {stats.armaturatorso}</div>
-              <div>👖 Armatura Gambe: {stats.armaturagambe}</div>
-              <div>❤️ Vita: {stats.hp}</div>
-              <div>🍗 Fame: {stats.fame}</div>
-              <div>💪 Stanchezza: {stats.stanchezza}</div>
-              <div>📍 Posizione: {stats.posizione}</div>
-              <div>🌦️ Clima: {stats.clima}</div>
-              <div>🕒 Fascia Oraria: {stats.fascia_oraria}</div>
-              <div>🔁 Turno: {stats.turno}</div>
-            </div>
+          <Grid container spacing={2} sx={{ backgroundColor: '#1a1a1a', color: 'white', p: 2, borderRadius: 2, border: '1px solid #444' }}>
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Nome:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.userid}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Turno:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.turno}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Vita:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.hp}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Fame:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.fame}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Stanchezza:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.stanchezza}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Posizione:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.posizione}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Arma:</strong></Typography></Grid>
+            <Grid className="grid-item" size={5}><Typography variant="body1" align="left">{stats.arma}</Typography></Grid>
+            <Grid className="grid-item" size={3}><Typography variant="body1"><strong>Slot:</strong> {stats.slotarma}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Braccia:</strong></Typography></Grid>
+            <Grid className="grid-item" size={5}>
+              <Typography variant="body1"> {stats.armaturabraccia}</Typography>
+            </Grid>
+            <Grid className="grid-item" size={3}>
+              <Typography variant="body1" ><strong>Slot:</strong> {stats.slotbraccia}</Typography>
+            </Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Testa:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatesta}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Torso:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatorso}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Gambe:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturagambe}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Clima:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.clima}</Typography></Grid>
+
+            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Fascia Oraria:</strong></Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.fascia_oraria}</Typography></Grid>
+
+
+          </Grid>
           </>
         ) : (
           <div className="pro-menu-item">Caricamento...</div>
@@ -151,7 +232,6 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
-
         <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap />
         <Polyline positions={path} color="red" />
         {path.length > 0 && (
@@ -164,6 +244,9 @@ export default function MappaInterattiva({ userid, pathHistory }) {
             </Marker>
           </>
         )}
+                  <Marker position={[0,0]}> 
+            <Popup>Centro</Popup>
+          </Marker>
         <ZoomControl position="topright" />
       </MapContainer>
     </div>
