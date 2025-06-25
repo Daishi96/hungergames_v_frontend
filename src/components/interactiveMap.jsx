@@ -114,9 +114,27 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         </div>
         {stats ? (
           <>
-            <div className="pro-menu-item">❤️ Vita: {stats.hp}</div>
-            <div className="pro-menu-item">💪 Stanchezza: {stats.stamina}%</div>
-            <div className="pro-menu-item">🍗 Fame: {stats.hunger}%</div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 bg-zinc-900 text-white p-4 rounded-md border border-zinc-700">
+              <div className="col-span-2">🧍 Nome: {stats.nome}</div>
+              <div className="col-span-2 flex gap-x-2">
+                <div>🗡️ Arma: {stats.arma}</div>
+                <div>💼 Slot Arma: {stats.slotarma}</div>
+              </div>
+              <div className="col-span-2 flex gap-x-2">
+                <div>🧤 Armatura Braccia: {stats.armaturabraccia}</div>
+                <div>💪 Slot Braccia: {stats.slotbraccia}</div>
+              </div>
+              <div>🛡️ Armatura Testa: {stats.armaturatesta}</div>
+              <div>🦺 Armatura Torso: {stats.armaturatorso}</div>
+              <div>👖 Armatura Gambe: {stats.armaturagambe}</div>
+              <div>❤️ Vita: {stats.hp}</div>
+              <div>🍗 Fame: {stats.fame}</div>
+              <div>💪 Stanchezza: {stats.stanchezza}</div>
+              <div>📍 Posizione: {stats.posizione}</div>
+              <div>🌦️ Clima: {stats.clima}</div>
+              <div>🕒 Fascia Oraria: {stats.fascia_oraria}</div>
+              <div>🔁 Turno: {stats.turno}</div>
+            </div>
           </>
         ) : (
           <div className="pro-menu-item">Caricamento...</div>
