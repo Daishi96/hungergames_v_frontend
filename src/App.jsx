@@ -10,6 +10,21 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pathHistory, setPathHistory] = useState([{ q: 0, r: 0 }]);
 
+function colDistance(col) {
+  const base = 26;
+  const first = col.charCodeAt(0) - 65;   // 'A' -> 0 ... 'Z' -> 25 (colonna nel gruppo)
+  const second = col.charCodeAt(1) - 65;  // 'A' -> 0 ... 'Z' -> 25 (gruppo)
+
+  return first + second * base;
+}
+
+function convertToAxial(col, row) {
+  const distL = colDistance(col);
+  const r = -19 + distL;
+  const q = 8 + Math.floor(distL / 2) - row + 1;
+  return { r, q };
+}
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -27,11 +42,22 @@ function App() {
         const historyRes = await fetch(`https://hungergame-v.onrender.com/users/${userid}/history`);
         if (historyRes.ok) {
           const historyData = await historyRes.json();
-          const path = historyData.map(({ x, y }) => ({ q: Number(y), r: Number(x) }));
+
+          const path = historyData.map(({ coordinate }) => {
+            if (coordinate && coordinate.includes('.')) {
+              const [col, rowStr] = coordinate.split(".");
+              const row = parseInt(rowStr, 10);
+              const { r, q } = convertToAxial(col, row);
+              return { r, q };
+            } else {
+              return { r: 0, q: 0 }; // fallback se il formato è sbagliato
+            }
+          });
+
           setPathHistory(path);
-        } else {
-          setPathHistory([{ q: 0, r: 0 }]);
-        }
+          } else {
+            setPathHistory([{ q: 0, r: 0 }]);
+          }
       } else {
         setMessage(data.error || 'Errore di login');
       }

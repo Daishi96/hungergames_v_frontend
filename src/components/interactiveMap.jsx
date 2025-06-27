@@ -9,18 +9,6 @@ import { Grid, Typography } from '@mui/material';
 const TILE_SIZE = 128;
 const MAX_ZOOM = 4;
 
-/*function axialToPixel(q, r) {
-  const centerX = 64;
-  const centerY = -64;
-  //const correction = r !== 0 ? 0.0625 * (Math.abs(r) - 1) : 0;
-  const diagonalX = r * 2.4375 ;//- correction;
-  const diagonalY = r * 1.375 ;//- correction;
-  const verticalY = q * 2.625;
-  const x = centerX + diagonalX;
-  const y = centerY + verticalY - diagonalY;
-  return [y, x];
-}*/
-
 function axialToPixel(q, r) {
   const centerX = 64;
   const centerY = -64;
@@ -57,6 +45,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   }, [userid]);
 
   const path = pathHistory.map(({ q, r }) => axialToPixel(q, r));
+  
   useEffect(() => {
   console.log("Coordinate path:");
   path.forEach((pos, index) => {
