@@ -141,7 +141,8 @@ export default function MappaInterattiva({ userid, pathHistory }) {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '500px',
+          width: '95vw',               // responsive
+          maxWidth: '500px',  
           height: '100vh',
           backgroundColor: '#1a1a1a',
           color: 'white',
