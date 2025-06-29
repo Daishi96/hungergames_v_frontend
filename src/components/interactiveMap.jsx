@@ -32,6 +32,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const [stats, setStats] = useState(null);
   const [tileSet, setTileSet] = useState(1);
   const [pathMode, setPathMode] = useState(0);
+  const [showPOI, setShowPOI] = useState(false);
 
   const refreshData = () => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
@@ -65,6 +66,18 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const togglePathMode = () => {
     setPathMode((prevMode) => (prevMode + 1) % 3);
   };
+
+
+  // punti di interesse definiti con coordinate assiali (q,r)
+  const puntiInteresse = [
+    { id: 1, q: 10, r: 5, name: 'Villaggio' },
+    { id: 2, q: -3, r: 8, name: 'Fiume' },
+    { id: 3, q: 0, r: 0, name: 'Centro Mappa' },
+    { id: 4, q: -5, r: -7, name: 'Montagna' },
+  ];
+
+  // funzione toggle punti interesse
+  const togglePOI = () => setShowPOI((v) => !v);
 
   return (
     <div className="login-background" style={{ height: '100vh', position: 'relative' }}>
@@ -119,7 +132,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         style={{
           position: 'fixed',
           top: 15,
-          left: 160,
+          left: 110,
           zIndex: 1101,
           background: 'white',
           border: 'none',
@@ -138,14 +151,13 @@ export default function MappaInterattiva({ userid, pathHistory }) {
           style={{ display: 'block' }}
         />
       </button>
-
-      {/* Bottone per Refresh */}
+            {/* Bottone per visualizzare i punti di interesse */}
       <button
-        onClick={refreshData}
+        onClick={togglePOI}
         style={{
           position: 'fixed',
           top: 15,
-          left: 110,
+          left: 160,
           zIndex: 1101,
           background: 'white',
           border: 'none',
@@ -157,8 +169,8 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         }}
       >
         <img
-          src="/refresh.png"
-          alt="Cambia Tiles"
+          src="/map.png"
+          alt="Mostra posizione"
           width="24"
           height="24"
           style={{ display: 'block' }}
@@ -293,9 +305,16 @@ export default function MappaInterattiva({ userid, pathHistory }) {
                 <Popup>Posizione attuale</Popup>
               </Marker>
             )}
-          <Marker position={[0,0]}> 
-            <Popup>Centro</Popup>
-          </Marker>
+          {/* Marker punti di interesse (visibili solo se showPOI=true) */}
+          {showPOI &&
+            puntiInteresse.map(({ id, q, r, name }) => {
+              const [lat, lng] = axialToPixel(q, r);
+              return (
+                <Marker key={id} position={[lat, lng]}>
+                  <Popup>{name}</Popup>
+                </Marker>
+              );
+            })}
         <ZoomControl position="topright" />
       </MapContainer>
     </div>
