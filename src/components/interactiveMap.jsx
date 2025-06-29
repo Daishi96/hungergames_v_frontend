@@ -205,29 +205,109 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         {stats ? (
           <>
           <Grid container spacing={2} sx={{ backgroundColor: '#1a1a1a', color: 'white', p: 2, borderRadius: 2, border: '1px solid #444' }}>
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Nome:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/nome.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.userid}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Turno:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/turno.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.turno}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Vita:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/vita.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.hp}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Fame:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/fame.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.fame}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Stanchezza:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/stanchezza.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.stanchezza}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Posizione:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/posizione.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={8}><Typography align="left">{stats.posizione}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Arma:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/arma.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={5}><Typography variant="body1" align="left">{stats.arma}</Typography></Grid>
             <Grid className="grid-item" size={3}><Typography variant="body1"><strong>Slot:</strong> {stats.slotarma}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Braccia:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/braccia.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>            
             <Grid className="grid-item" size={5}>
               <Typography variant="body1"> {stats.armaturabraccia}</Typography>
             </Grid>
@@ -235,10 +315,20 @@ export default function MappaInterattiva({ userid, pathHistory }) {
               <Typography variant="body1" ><strong>Slot:</strong> {stats.slotbraccia}</Typography>
             </Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Testa:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/testa.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatesta}</Typography></Grid>
 
-            <Grid className="grid-item" size={3}>
+            <Grid className="grid-item" size={4}>
               <img 
                 src="/menu_icons/armatura.png" 
                 width={64}
@@ -249,15 +339,45 @@ export default function MappaInterattiva({ userid, pathHistory }) {
                 }}
               />
             </Grid>            
-            <Grid className="grid-item" size={9}><Typography align="left">{stats.armaturatorso}</Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatorso}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Gambe:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/gambe.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturagambe}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Clima:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/clima.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.clima}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Fascia Oraria:</strong></Typography></Grid>
+            <Grid className="grid-item" size={4}>
+              <img 
+                src="/menu_icons/orario.png" 
+                width={64}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.fascia_oraria}</Typography></Grid>
 
 
