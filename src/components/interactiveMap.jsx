@@ -238,8 +238,14 @@ export default function MappaInterattiva({ userid, pathHistory }) {
             <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Testa:</strong></Typography></Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatesta}</Typography></Grid>
 
-            <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Torso:</strong></Typography></Grid>
-            <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturatorso}</Typography></Grid>
+            <Grid className="grid-item" size={2}>
+              <img 
+                src="/menu_icons/armatura.png" 
+                alt="Nome" 
+                style={{ width: '32px', height: '32px', objectFit: 'contain' }} 
+              />
+            </Grid>            
+            <Grid className="grid-item" size={10}><Typography align="left">{stats.armaturatorso}</Typography></Grid>
 
             <Grid className="grid-item" size={4}><Typography variant="body1"><strong>Armatura Gambe:</strong></Typography></Grid>
             <Grid className="grid-item" size={8}><Typography align="left">{stats.armaturagambe}</Typography></Grid>
