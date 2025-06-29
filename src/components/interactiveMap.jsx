@@ -270,6 +270,16 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         zoomControl={false}
       >
         <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap />
+            {/* Mostra inizio*/}
+            {pathMode === 0 && path.length == 1 && (
+              <>
+                <Polyline positions={path} color="red" />
+                <Marker position={path[0]}>
+                  <Popup>Inizio</Popup>
+                </Marker>
+                </>
+            )}
+
             {/* Mostra tutto il percorso (modalità 0) */}
             {pathMode === 0 && path.length > 1 && (
               <>
@@ -283,21 +293,40 @@ export default function MappaInterattiva({ userid, pathHistory }) {
               </>
             )}
 
-            {/* Solo ultimi 2 punti (modalità 1) */}
-            {pathMode === 1 && path.length > 1 && (
-              <>
-                <Polyline
-                  positions={path.slice(-3)} // ultimi 2
-                  color="orange"
-                />
-                <Marker position={path[path.length - 3]}>
-                  <Popup>Penultimo</Popup>
-                </Marker>
-                <Marker position={path[path.length - 1]}>
-                  <Popup>Attuale</Popup>
-                </Marker>
-              </>
-            )}
+              {/* Solo ultimi punti (modalità 1) */}
+              {pathMode === 1 && path.length > 0 && (
+                <>
+                  <Polyline
+                    positions={path.slice(Math.max(path.length - 3, 0))} // ultimi 3 o meno
+                    color="orange"
+                  />
+                  {path.length === 1 && (
+                    <Marker position={path[0]}>
+                      <Popup>Inizio e Fine</Popup>
+                    </Marker>
+                  )}
+                  {path.length === 2 && (
+                    <>
+                      <Marker position={path[0]}>
+                        <Popup>Inizio</Popup>
+                      </Marker>
+                      <Marker position={path[1]}>
+                        <Popup>Fine</Popup>
+                      </Marker>
+                    </>
+                  )}
+                  {path.length >= 3 && (
+                    <>
+                      <Marker position={path[path.length - 3]}>
+                        <Popup>Penultimo</Popup>
+                      </Marker>
+                      <Marker position={path[path.length - 1]}>
+                        <Popup>Attuale</Popup>
+                      </Marker>
+                    </>
+                  )}
+                </>
+              )}
 
             {/* Solo ultimo punto (modalità 2) */}
             {pathMode === 2 && path.length > 0 && (
