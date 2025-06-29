@@ -31,6 +31,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const [collapsed, setCollapsed] = useState(true);
   const [stats, setStats] = useState(null);
   const [tileSet, setTileSet] = useState(1);
+  const [pathMode, setPathMode] = useState(0);
 
   const refreshData = () => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
@@ -60,6 +61,10 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const tileUrl = tileSet === 1
     ? '/tiles/base/{z}/{x}/{y}.png'
     : '/tiles/coordinates/{z}/{x}/{y}.png';
+
+  const togglePathMode = () => {
+    setPathMode((prevMode) => (prevMode + 1) % 3);
+  };
 
   return (
     <div className="login-background" style={{ height: '100vh', position: 'relative' }}>
@@ -108,6 +113,31 @@ export default function MappaInterattiva({ userid, pathHistory }) {
           style={{ display: 'block' }}
         />
       </button>
+      {/* Bottone per visualizzare il path */}
+      <button
+        onClick={togglePathMode}
+        style={{
+          position: 'fixed',
+          top: 15,
+          left: 160,
+          zIndex: 1101,
+          background: 'white',
+          border: 'none',
+          padding: '0.5rem',
+          borderRadius: '50px',
+          cursor: 'pointer',
+          color: 'white',
+          boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+        }}
+      >
+        <img
+          src="/position.png"
+          alt="Mostra posizione"
+          width="24"
+          height="24"
+          style={{ display: 'block' }}
+        />
+      </button>
 
       {/* Bottone per Refresh */}
       <button
@@ -141,21 +171,24 @@ export default function MappaInterattiva({ userid, pathHistory }) {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '95vw',               // responsive
-          maxWidth: '500px',  
+          width: '95vw',
+          maxWidth: '500px',
           height: '100vh',
           backgroundColor: '#1a1a1a',
           color: 'white',
-          paddingTop: '4rem',
+          paddingTop: '60px',
           transform: collapsed ? 'translateX(-100%)' : 'translateX(0)',
           transition: 'transform 0.3s ease',
           zIndex: 1100,
-          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <div style={{ padding: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>
+        {/* intestazione fissa */}
+        <div style={{ top: 100, padding: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>
           Statistiche
         </div>
+          <div style={{ overflowY: 'auto', flexGrow: 1, paddingBottom: '2rem' }}>
         {stats ? (
           <>
           <Grid container spacing={2} sx={{ backgroundColor: '#1a1a1a', color: 'white', p: 2, borderRadius: 2, border: '1px solid #444' }}>
@@ -210,6 +243,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         ) : (
           <div className="pro-menu-item">Caricamento...</div>
         )}
+        </div>
       </div>
 
       {/* Mappa */}
@@ -223,18 +257,42 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         zoomControl={false}
       >
         <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap />
-        <Polyline positions={path} color="red" />
-        {path.length > 0 && (
-          <>
-            <Marker position={path[0]}>
-              <Popup>Inizio</Popup>
-            </Marker>
-            <Marker position={path[path.length - 1]}>
-              <Popup>Fine</Popup>
-            </Marker>
-          </>
-        )}
-                  <Marker position={[0,0]}> 
+            {/* Mostra tutto il percorso (modalità 0) */}
+            {pathMode === 0 && path.length > 1 && (
+              <>
+                <Polyline positions={path} color="red" />
+                <Marker position={path[0]}>
+                  <Popup>Inizio</Popup>
+                </Marker>
+                <Marker position={path[path.length - 1]}>
+                  <Popup>Fine</Popup>
+                </Marker>
+              </>
+            )}
+
+            {/* Solo ultimi 2 punti (modalità 1) */}
+            {pathMode === 1 && path.length > 1 && (
+              <>
+                <Polyline
+                  positions={path.slice(-3)} // ultimi 2
+                  color="orange"
+                />
+                <Marker position={path[path.length - 3]}>
+                  <Popup>Penultimo</Popup>
+                </Marker>
+                <Marker position={path[path.length - 1]}>
+                  <Popup>Attuale</Popup>
+                </Marker>
+              </>
+            )}
+
+            {/* Solo ultimo punto (modalità 2) */}
+            {pathMode === 2 && path.length > 0 && (
+              <Marker position={path[path.length - 1]}>
+                <Popup>Posizione attuale</Popup>
+              </Marker>
+            )}
+          <Marker position={[0,0]}> 
             <Popup>Centro</Popup>
           </Marker>
         <ZoomControl position="topright" />
