@@ -54,5 +54,9 @@ html, body, #root {
   border: 1px solid #444;
 }
 
-
+.sidebar-scrollable {
+  overflow-y: scroll;
+  overscroll-behavior: contain; /* oppure auto */
+  scroll-padding-bottom: 50px; /* aggiusta quanto vuoi */
+}
 

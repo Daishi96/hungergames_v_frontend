@@ -188,7 +188,8 @@ export default function MappaInterattiva({ userid, pathHistory }) {
         <div style={{ top: 100, padding: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>
           Statistiche
         </div>
-          <div style={{ overflowY: 'auto', flexGrow: 1, paddingBottom: '2rem' }}>
+          <div style={{ overflowY: 'auto', flexGrow: 1, paddingBottom: '6rem', overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch', }}>
         {stats ? (
           <>
           <Grid container spacing={2} sx={{ backgroundColor: '#1a1a1a', color: 'white', p: 2, borderRadius: 2, border: '1px solid #444' }}>
