@@ -72,9 +72,23 @@ function convertToAxial(col, row) {
     <div className="login-background">
       <div className="login-box">
         <h2>Hunger James</h2>
-        <form onSubmit={handleLogin}>
-          <input type="text" placeholder="User ID" value={userid} onChange={e => setUserid(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <form onSubmit={handleLogin} autoComplete="on">
+          <input
+            type="text"
+            name="username"
+            autoComplete="username"
+            placeholder="User ID"
+            value={userid}
+            onChange={e => setUserid(e.target.value)}
+          />
+          <input
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
           <button type="submit">Entra nell'arena</button>
         </form>
         <p>{message}</p>
