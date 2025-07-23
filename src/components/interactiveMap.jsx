@@ -27,13 +27,18 @@ function axialToPixel(q, r) {
 
 
 // funzione di conversione coordinate "AB.3" → { q, r }
+function colDistance(col) {
+  const base = 26;
+  const first = col.charCodeAt(0) - 65;   // 'A' -> 0 ... 'Z' -> 25 (colonna nel gruppo)
+  const second = col.charCodeAt(1) - 65;  // 'A' -> 0 ... 'Z' -> 25 (gruppo)
+
+  return first + second * base;
+}
+
 function convertToAxial(col, row) {
-  const colIndex = col
-    .split('')
-    .reduce((acc, char, i) => acc * 26 + (char.charCodeAt(0) - 65 + 1), 0);
-  const r = colIndex - 210; // da "AA" = 1 → -19 fino a "MB" = 420 → +19
-  const centerRow = 18;
-  const q = centerRow - row;
+  const distL = colDistance(col);
+  const r = -19 + distL;
+  const q = 8 + Math.floor(distL / 2) - row + 1;
   return { r, q };
 }
 
@@ -44,6 +49,14 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const [pathMode, setPathMode] = useState(0);
   const [showPOI, setShowPOI] = useState(false);
   const [puntiInteresse, setPuntiInteresse] = useState([]);
+
+
+  const myIcon = L.icon({
+    iconUrl: '/poi/location.png', // percorso immagine icona
+    iconSize: [32, 32],                // dimensione icona
+    iconAnchor: [16, 16],              // punto "ancorato" all posizione marker (tipicamente sotto icona)
+    popupAnchor: [0, -32],             // posizione popup rispetto icona
+  });
 
 
   const refreshData = () => {
@@ -80,6 +93,7 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   };
 
 
+//Punti di interesse
 useEffect(() => {
   fetch(`https://hungergame-v.onrender.com/locations`)
     .then(res => res.json())
@@ -89,7 +103,7 @@ useEffect(() => {
           const [col, rowStr] = coordinate.split('.');
           const row = parseInt(rowStr, 10);
           const { r, q } = convertToAxial(col, row);
-          return { id, name: nome, description: descrizione, q, r };
+          return { id, name: nome, description: descrizione, r, q };
         }
         return null;
       }).filter(Boolean); // rimuove eventuali null
@@ -489,11 +503,16 @@ useEffect(() => {
             )}
           {/* Marker punti di interesse (visibili solo se showPOI=true) */}
           {showPOI &&
-            puntiInteresse.map(({ id, q, r, name }) => {
+            puntiInteresse.map(({ id, q, r, name, description}) => {
               const [lat, lng] = axialToPixel(q, r);
               return (
-                <Marker key={id} position={[lat, lng]}>
-                  <Popup>{name}</Popup>
+                <Marker key={id} position={[lat, lng]} icon={myIcon}>
+                  <Popup>
+                    <div>
+                      <h3>{name}</h3>
+                      <p>{description}</p>
+                    </div>
+                  </Popup>
                 </Marker>
               );
             })}
