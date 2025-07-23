@@ -25,8 +25,6 @@ function axialToPixel(q, r) {
   return [y, x];
 }
 
-//Gestione Punti di interesse
-const [puntiInteresse, setPuntiInteresse] = useState([]);
 
 // funzione di conversione coordinate "AB.3" → { q, r }
 function convertToAxial(col, row) {
@@ -45,6 +43,8 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   const [tileSet, setTileSet] = useState(1);
   const [pathMode, setPathMode] = useState(0);
   const [showPOI, setShowPOI] = useState(false);
+  const [puntiInteresse, setPuntiInteresse] = useState([]);
+
 
   const refreshData = () => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
