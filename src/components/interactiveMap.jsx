@@ -25,7 +25,19 @@ function axialToPixel(q, r) {
   return [y, x];
 }
 
+//Gestione Punti di interesse
+const [puntiInteresse, setPuntiInteresse] = useState([]);
 
+// funzione di conversione coordinate "AB.3" → { q, r }
+function convertToAxial(col, row) {
+  const colIndex = col
+    .split('')
+    .reduce((acc, char, i) => acc * 26 + (char.charCodeAt(0) - 65 + 1), 0);
+  const r = colIndex - 210; // da "AA" = 1 → -19 fino a "MB" = 420 → +19
+  const centerRow = 18;
+  const q = centerRow - row;
+  return { r, q };
+}
 
 export default function MappaInterattiva({ userid, pathHistory }) {
   const [collapsed, setCollapsed] = useState(true);
@@ -68,13 +80,24 @@ export default function MappaInterattiva({ userid, pathHistory }) {
   };
 
 
-  // punti di interesse definiti con coordinate assiali (q,r)
-  const puntiInteresse = [
-    { id: 1, q: 10, r: 5, name: 'Villaggio' },
-    { id: 2, q: -3, r: 8, name: 'Fiume' },
-    { id: 3, q: 0, r: 0, name: 'Centro Mappa' },
-    { id: 4, q: -5, r: -7, name: 'Montagna' },
-  ];
+useEffect(() => {
+  fetch(`https://hungergame-v.onrender.com/locations`)
+    .then(res => res.json())
+    .then(data => {
+      const poi = data.map(({ id, nome, coordinate, descrizione }) => {
+        if (coordinate && coordinate.includes('.')) {
+          const [col, rowStr] = coordinate.split('.');
+          const row = parseInt(rowStr, 10);
+          const { r, q } = convertToAxial(col, row);
+          return { id, name: nome, description: descrizione, q, r };
+        }
+        return null;
+      }).filter(Boolean); // rimuove eventuali null
+      setPuntiInteresse(poi);
+    })
+    .catch(console.error);
+}, []);
+
 
   // funzione toggle punti interesse
   const togglePOI = () => setShowPOI((v) => !v);
