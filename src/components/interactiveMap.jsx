@@ -58,6 +58,13 @@ export default function MappaInterattiva({ userid, pathHistory }) {
     popupAnchor: [0, -32],             // posizione popup rispetto icona
   });
 
+  const playerIcon = L.icon({
+    iconUrl: '/poi/adventurer.png', // percorso immagine icona
+    iconSize: [40, 40],                // dimensione icona
+    iconAnchor: [20, 30],              // punto "ancorato" all posizione marker (tipicamente sotto icona)
+    popupAnchor: [0, 0],             // posizione popup rispetto icona
+  });
+
 
   const refreshData = () => {
     fetch(`https://hungergame-v.onrender.com/users/${userid}/stats`)
@@ -441,7 +448,7 @@ useEffect(() => {
             {pathMode === 0 && path.length == 1 && (
               <>
                 <Polyline positions={path} color="red" />
-                <Marker position={path[0]}>
+                <Marker position={path[0]} icon={playerIcon}>
                   <Popup>Inizio</Popup>
                 </Marker>
                 </>
@@ -451,10 +458,10 @@ useEffect(() => {
             {pathMode === 0 && path.length > 1 && (
               <>
                 <Polyline positions={path} color="red" />
-                <Marker position={path[0]}>
+                <Marker position={path[0]} icon={playerIcon}>
                   <Popup>Inizio</Popup>
                 </Marker>
-                <Marker position={path[path.length - 1]}>
+                <Marker position={path[path.length - 1]} icon={playerIcon}>
                   <Popup>Fine</Popup>
                 </Marker>
               </>
@@ -468,26 +475,26 @@ useEffect(() => {
                     color="orange"
                   />
                   {path.length === 1 && (
-                    <Marker position={path[0]}>
+                    <Marker position={path[0]} icon={playerIcon}>
                       <Popup>Inizio e Fine</Popup>
                     </Marker>
                   )}
                   {path.length === 2 && (
                     <>
-                      <Marker position={path[0]}>
+                      <Marker position={path[0]} icon={playerIcon}>
                         <Popup>Inizio</Popup>
                       </Marker>
-                      <Marker position={path[1]}>
+                      <Marker position={path[1]} icon={playerIcon}>
                         <Popup>Fine</Popup>
                       </Marker>
                     </>
                   )}
                   {path.length >= 3 && (
                     <>
-                      <Marker position={path[path.length - 3]}>
+                      <Marker position={path[path.length - 3]} icon={playerIcon}>
                         <Popup>Penultimo</Popup>
                       </Marker>
-                      <Marker position={path[path.length - 1]}>
+                      <Marker position={path[path.length - 1]} icon={playerIcon}>
                         <Popup>Attuale</Popup>
                       </Marker>
                     </>
@@ -497,7 +504,7 @@ useEffect(() => {
 
             {/* Solo ultimo punto (modalità 2) */}
             {pathMode === 2 && path.length > 0 && (
-              <Marker position={path[path.length - 1]}>
+              <Marker position={path[path.length - 1]} icon={playerIcon}>
                 <Popup>Posizione attuale</Popup>
               </Marker>
             )}
