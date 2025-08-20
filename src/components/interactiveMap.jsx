@@ -431,12 +431,12 @@ useEffect(() => {
         crs={L.CRS.Simple}
         center={[-64, 64]}
         zoom={2}
-        minZoom={0}
+        minZoom={-5}
         maxZoom={MAX_ZOOM}
         style={{ width: '100%', height: '100%' }}
         zoomControl={false}
       >
-        <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap />
+        <TileLayer url={tileUrl} tileSize={TILE_SIZE} noWrap minNativeZoom={0} maxNativeZoom={MAX_ZOOM}/>
             {/* Mostra inizio*/}
             {pathMode === 0 && path.length == 1 && (
               <>
