@@ -448,7 +448,7 @@ useEffect(() => {
             {pathMode === 0 && path.length == 1 && (
               <>
                 <Polyline positions={path} color="red" />
-                <Marker position={path[0]} icon={playerIcon}>
+                <Marker position={path[0]}>
                   <Popup>Inizio</Popup>
                 </Marker>
                 </>
@@ -458,7 +458,7 @@ useEffect(() => {
             {pathMode === 0 && path.length > 1 && (
               <>
                 <Polyline positions={path} color="red" />
-                <Marker position={path[0]} icon={playerIcon}>
+                <Marker position={path[0]}>
                   <Popup>Inizio</Popup>
                 </Marker>
                 <Marker position={path[path.length - 1]} icon={playerIcon}>
@@ -475,13 +475,13 @@ useEffect(() => {
                     color="orange"
                   />
                   {path.length === 1 && (
-                    <Marker position={path[0]} icon={playerIcon}>
+                    <Marker position={path[0]}>
                       <Popup>Inizio e Fine</Popup>
                     </Marker>
                   )}
                   {path.length === 2 && (
                     <>
-                      <Marker position={path[0]} icon={playerIcon}>
+                      <Marker position={path[0]}>
                         <Popup>Inizio</Popup>
                       </Marker>
                       <Marker position={path[1]} icon={playerIcon}>
@@ -491,7 +491,7 @@ useEffect(() => {
                   )}
                   {path.length >= 3 && (
                     <>
-                      <Marker position={path[path.length - 3]} icon={playerIcon}>
+                      <Marker position={path[path.length - 3]}>
                         <Popup>Penultimo</Popup>
                       </Marker>
                       <Marker position={path[path.length - 1]} icon={playerIcon}>
