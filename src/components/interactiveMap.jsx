@@ -449,7 +449,7 @@ useEffect(() => {
               <>
                 <Polyline positions={path} color="red" />
                 <Marker position={path[0]}>
-                  <Popup>Attuale</Popup>
+                  <Popup>Posizione attuale</Popup>
                 </Marker>
                 </>
             )}
@@ -462,7 +462,7 @@ useEffect(() => {
                   <Popup>Inizio</Popup>
                 </Marker>
                 <Marker position={path[path.length - 1]} icon={playerIcon}>
-                  <Popup>Attuale</Popup>
+                  <Popup>Posizione attuale</Popup>
                 </Marker>
               </>
             )}
@@ -485,7 +485,7 @@ useEffect(() => {
                         <Popup>Inizio</Popup>
                       </Marker>
                       <Marker position={path[1]} icon={playerIcon}>
-                        <Popup>Attuale</Popup>
+                        <Popup>Posizione attuale</Popup>
                       </Marker>
                     </>
                   )}
@@ -495,7 +495,7 @@ useEffect(() => {
                         <Popup>Penultimo</Popup>
                       </Marker>
                       <Marker position={path[path.length - 1]} icon={playerIcon}>
-                        <Popup>Attuale</Popup>
+                        <Popup>Posizione attuale</Popup>
                       </Marker>
                     </>
                   )}
