@@ -425,6 +425,18 @@ useEffect(() => {
             <Grid className="grid-item" size={8}><Typography align="left">{stats.fascia_oraria}</Typography></Grid>
 
 
+            <Grid className="grid-item" size={12}>
+                            <img 
+                src="/menu_icons/Footer.png" 
+                width={440}
+                height={64}
+                style={{
+                  imageRendering: 'pixelated',
+                  msInterpolationMode: 'nearest-neighbor',
+                }}
+              />
+            </Grid>
+
           </Grid>
           </>
         ) : (
