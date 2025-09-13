@@ -325,7 +325,7 @@ useEffect(() => {
                 }}
               />
             </Grid>            
-            <Grid className="grid-item" size={8}><Typography align="left">{stats.posizione}</Typography></Grid>
+            <Grid className="grid-item" size={8}><Typography align="left">{path[path.length - 1]}</Typography></Grid>
 
             <Grid className="grid-item" size={4}>
               <img 
